@@ -5,7 +5,7 @@ This plugin let's you add the memory usage to tmux status fields.
 
 ### Dependencies
 
-This plugin needs `top`, `grep`, `tail` and `awk` to be available.
+This plugin needs `top`, `grep`, `tail`, `xargs` and `awk` to be available.
 
 ### Usage
 
@@ -16,7 +16,7 @@ Add one of the available values to your existing `status-left` or
 |-------|-------------|
 | `#{mem_percentage}` | Memory usage in percent |
 
-The plugin also has some options to change the colors of the indicator.
+The plugin also has some options to change the indicator.
 
 | Value | Description | Default |
 |-------|-------------|---------|
@@ -28,6 +28,7 @@ The plugin also has some options to change the colors of the indicator.
 | `@mem_mid_percentage` | Value for middle CPU load |  35 |
 | `@mem_low_color` | Color code prepended for low memory usage | `#[fg=colour2]` |
 | `@mem_error_color` | Color code prepended for error codes | `#[fg=colour0]#[bg=colour1]` |
+| `@mem_ignore_cached` | Ignore memory used for caching (`yes`/`no`) | `yes` |
 
 Example:
 
@@ -36,6 +37,7 @@ Example:
     set -g @plugin 'GROG/tmux-plugin-mem'
     set -g @mem_high_percentage "80"
     set -g @mem_low_percentage "40"
+    set -g @mem_ignore_cached "no"
 
 
 ### Installation with [Tmux Plugin Manager](https://github.com/tmux-plugins/tpm) (recommended)

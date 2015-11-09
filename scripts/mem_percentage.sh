@@ -12,6 +12,7 @@ mid_color=""
 mid_percentage=""
 low_color=""
 error_color=""
+ignore_cached=""
 
 d_pre_color=""
 d_post_color="#[default]"
@@ -21,6 +22,7 @@ d_mid_color="#[fg=colour3]"
 d_mid_percentage="35"
 d_low_color="#[fg=colour2]"
 d_error_color="#[fg=colour0]#[bg=colour1]"
+d_ignore_cached="yes"
 
 init_vars() {
     init_var "pre_color"
@@ -31,17 +33,27 @@ init_vars() {
     init_var "mid_percentage"
     init_var "low_color"
     init_var "error_color"
+    init_var "ignore_cached"
 }
 
 mem_percentage() {
     if command_exists "top" &&
         command_exists "grep" &&
         command_exists "tail" &&
+        command_exists "xargs" &&
         command_exists "awk"; then
-        local mem_p=$(top -d 0.5 -b -n 2 |\
-                        grep 'Mem:' |\
-                        tail -1 |\
-                        awk '{d = $3/100}{printf("%02d\n", $5/d)}')
+        if [ "$ignore_cached" == "yes" ]; then
+            local mem_p=$(top -d 0.5 -b -n 2 |\
+                            grep 'Mem' |\
+                            tail -2 |\
+                            xargs |\
+                            awk '{d = $3/100}{m = $5-$19}{printf("%02d\n", m/d)}')
+        else
+            local mem_p=$(top -d 0.5 -b -n 2 |\
+                            grep 'Mem:' |\
+                            tail -1 |\
+                            awk '{d = $3/100}{printf("%02d\n", $5/d)}')
+        fi
 
         if [ "$mem_p" -gt "$high_percentage" ]; then
             print_color "high" "$mem_p"
