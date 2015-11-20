@@ -25,15 +25,15 @@ d_error_color="#[fg=colour0]#[bg=colour1]"
 d_ignore_cached="yes"
 
 init_vars() {
-    init_var "pre_color"
-    init_var "post_color"
-    init_var "high_color"
-    init_var "high_percentage"
-    init_var "mid_color"
-    init_var "mid_percentage"
-    init_var "low_color"
-    init_var "error_color"
-    init_var "ignore_cached"
+    init_var "mem" "pre_color"
+    init_var "mem" "post_color"
+    init_var "mem" "high_color"
+    init_var "mem" "high_percentage"
+    init_var "mem" "mid_color"
+    init_var "mem" "mid_percentage"
+    init_var "mem" "low_color"
+    init_var "mem" "error_color"
+    init_var "mem" "ignore_cached"
 }
 
 mem_percentage() {

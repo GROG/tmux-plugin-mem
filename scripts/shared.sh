@@ -21,8 +21,8 @@ set_tmux_option() {
 }
 
 init_var() {
-    local d_var="d_$1"
-    eval $1=$(get_tmux_option "@mem_$1" "${!d_var}")
+    local d_var="d_$2"
+    eval $2=$(get_tmux_option "@$1_$2" "${!d_var}")
 }
 
 print_color() {
