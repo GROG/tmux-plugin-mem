@@ -40,8 +40,8 @@ init_vars() {
 }
 
 mem_value() {
-    if [ -x $custom_percentage ];then
-        eval $custom_percentage
+    if [ -x "$custom_percentage" ];then
+        eval "$custom_percentage"
     elif is_osx; then
         if [ "$ignore_cached" == "yes" ]; then
             top -l 1 |\
