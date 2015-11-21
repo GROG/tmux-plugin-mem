@@ -13,6 +13,7 @@ mid_percentage=""
 low_color=""
 error_color=""
 ignore_cached=""
+custom_percentage=""
 
 d_pre_color=""
 d_post_color="#[default]"
@@ -23,6 +24,7 @@ d_mid_percentage="35"
 d_low_color="#[fg=colour2]"
 d_error_color="#[fg=colour0]#[bg=colour1]"
 d_ignore_cached="yes"
+d_custom_percentage=""
 
 init_vars() {
     init_var "mem" "pre_color"
@@ -34,10 +36,13 @@ init_vars() {
     init_var "mem" "low_color"
     init_var "mem" "error_color"
     init_var "mem" "ignore_cached"
+    init_var "mem" "custom_percentage"
 }
 
 mem_value() {
-    if is_osx; then
+    if [ -x $custom_percentage ];then
+        eval $custom_percentage
+    elif is_osx; then
         if [ "$ignore_cached" == "yes" ]; then
             top -l 1 |\
             grep 'PhysMem' |\

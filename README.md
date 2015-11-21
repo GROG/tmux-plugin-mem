@@ -24,12 +24,13 @@ The plugin also has some options to change the indicator.
 | `@mem_pre_color` | Color code prepended to value | / |
 | `@mem_post_color` | Color code appended to value | `#[default]` |
 | `@mem_high_color` | Color code prepended for high memory usage | `#[fg=colour1]` |
-| `@mem_high_percentage` | Value for high CPU load |  75 |
+| `@mem_high_percentage` | Value for high memory usage |  75 |
 | `@mem_mid_color` | Color code prepended for middle memory usage | `#[fg=colour3]` |
-| `@mem_mid_percentage` | Value for middle CPU load |  35 |
+| `@mem_mid_percentage` | Value for middle memory usage |  35 |
 | `@mem_low_color` | Color code prepended for low memory usage | `#[fg=colour2]` |
 | `@mem_error_color` | Color code prepended for error codes | `#[fg=colour0]#[bg=colour1]` |
 | `@mem_ignore_cached` | Ignore memory used for caching (`yes`/`no`) | `yes` |
+| `@mem_custom_percentage` | Custom script to get memory usage | / |
 
 Example:
 
@@ -39,6 +40,7 @@ Example:
     set -g @mem_high_percentage "80"
     set -g @mem_low_percentage "40"
     set -g @mem_ignore_cached "no"
+    set -g @mem_custom_percentage "$HOME/.scripts/mem_percentage.sh"
 
 
 ### Installation with [Tmux Plugin Manager](https://github.com/tmux-plugins/tpm) (recommended)
