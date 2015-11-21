@@ -29,3 +29,11 @@ print_color() {
     local color="$1_color"
     echo "$pre_color${!color}$2$post_color"
 }
+
+is_osx() {
+    [ $(uname) == "Darwin" ]
+}
+
+is_cygwin() {
+    command_exists "WMIC"
+}

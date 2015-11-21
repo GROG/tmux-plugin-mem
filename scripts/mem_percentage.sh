@@ -36,35 +36,46 @@ init_vars() {
     init_var "mem" "ignore_cached"
 }
 
-mem_percentage() {
-    if command_exists "top" &&
-        command_exists "grep" &&
-        command_exists "tail" &&
-        command_exists "xargs" &&
-        command_exists "awk"; then
+mem_value() {
+    if is_osx; then
         if [ "$ignore_cached" == "yes" ]; then
-            local mem_p=$(top -d 0.5 -b -n 2 |\
-                            grep 'Mem' |\
-                            tail -2 |\
-                            xargs |\
-                            awk '{d = $3/100}{m = $5-$19}{printf("%02d\n", m/d)}')
+            top -l 1 |\
+            grep 'PhysMem' |\
+            sed 's/[^0-9 ]*//g' |\
+            awk '{d = ($1+$3)/100}{m = $1-$2}{printf("%02d\n", m/d)}'
         else
-            local mem_p=$(top -d 0.5 -b -n 2 |\
-                            grep 'Mem:' |\
-                            tail -1 |\
-                            awk '{d = $3/100}{printf("%02d\n", $5/d)}')
+            top -l 1 |\
+            grep 'PhysMem' |\
+            sed 's/[^0-9 ]*//g' |\
+            awk '{d = ($1+$3)/100}{printf("%02d\n", $1/d)}'
         fi
-
-        if [ "$mem_p" -gt "$high_percentage" ]; then
-            print_color "high" "$mem_p"
-        elif [ "$mem_p" -gt "$mid_percentage" ]; then
-            print_color "mid" "$mem_p"
+    elif command_exists "top"; then
+        if [ "$ignore_cached" == "yes" ]; then
+            top -d 0.5 -b -n 2 |\
+            grep 'Mem' |\
+            tail -2 |\
+            xargs |\
+            awk '{d = $3/100}{m = $5-$19}{printf("%02d\n", m/d)}'
         else
-            print_color "low" "$mem_p"
+            top -d 0.5 -b -n 2 |\
+            grep 'Mem:' |\
+            tail -1 |\
+            awk '{d = $3/100}{printf("%02d\n", $5/d)}'
         fi
+    fi
+}
 
-    else
+mem_percentage() {
+    local mem_p=$(mem_value)
+
+    if [ -z "$mem_p" ]; then
         print_color "error" "EE"
+    elif [ "$mem_p" -gt "$high_percentage" ]; then
+        print_color "high" "$mem_p"
+    elif [ "$mem_p" -gt "$mid_percentage" ]; then
+        print_color "mid" "$mem_p"
+    else
+        print_color "low" "$mem_p"
     fi
 }
 

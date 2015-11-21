@@ -5,7 +5,8 @@ This plugin let's you add the memory usage to tmux status fields.
 
 ### Dependencies
 
-This plugin needs `top`, `grep`, `tail`, `xargs` and `awk` to be available.
+None.
+
 
 ### Usage
 
