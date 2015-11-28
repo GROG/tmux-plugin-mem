@@ -1,5 +1,7 @@
 # tmux-plugin-mem
 
+[![Build Status](https://travis-ci.org/GROG/tmux-plugin-mem.svg?branch=master)](https://travis-ci.org/GROG/tmux-plugin-mem)
+
 This plugin let's you add the memory usage to tmux status fields.
 
 
