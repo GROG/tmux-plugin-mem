@@ -2,7 +2,7 @@
 
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-source $CURRENT_DIR/shared.sh
+source "$CURRENT_DIR/shared.sh"
 
 pre_color=""
 post_color=""
@@ -54,6 +54,16 @@ mem_value() {
             sed 's/[^0-9 ]*//g' |\
             awk '{d = ($1+$3)/100}{printf("%02d\n", $1/d)}'
         fi
+    elif command_exists "free"; then
+        if [ "$ignore_cached" == "yes" ]; then
+            free |\
+            grep 'Mem' |\
+            awk '{d = $2/100}{printf("%02d\n", $3/d)}'
+        else
+            free |\
+            grep 'Mem' |\
+            awk '{d = $2/100}{m = $3+$6}{printf("%02d\n", m/d)}'
+        fi
     elif command_exists "top"; then
         if [ "$ignore_cached" == "yes" ]; then
             top -d 0.5 -b -n 2 |\
@@ -86,6 +96,6 @@ mem_percentage() {
 
 main() {
     init_vars
-	mem_percentage
+    mem_percentage
 }
 main
