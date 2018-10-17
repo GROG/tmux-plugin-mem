@@ -47,12 +47,12 @@ mem_value() {
             top -l 1 |\
             grep 'PhysMem' |\
             sed 's/[^0-9 ]*//g' |\
-            awk '{d = ($1+$3)/100}{m = $1-$2}{printf("%02d\n", m/d)}'
+            awk '{f = $3}{"sysctl hw.memsize" | getline}{d = $2/1024/1024}{printf("%02d\n", 100*(d-f)/d)}'
         else
             top -l 1 |\
             grep 'PhysMem' |\
             sed 's/[^0-9 ]*//g' |\
-            awk '{d = ($1+$3)/100}{printf("%02d\n", $1/d)}'
+            awk '{f = $2+$3}{"sysctl hw.memsize" | getline}{d = $2/1024/1024}{printf("%02d\n", 100*(d-f)/d)}'
         fi
     elif command_exists "free"; then
         if [ "$ignore_cached" == "yes" ]; then
